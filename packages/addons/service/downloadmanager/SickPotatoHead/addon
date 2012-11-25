@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
@@ -18,20 +20,19 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="SABnzbd"
-PKG_VERSION="0.7.6"
-PKG_REV="1"
-PKG_ARCH="any"
-PKG_LICENSE="OSS"
-PKG_SITE="http://sabnzbd.org/"
-PKG_URL="$SOURCEFORGE_SRC/sabnzbdplus/sabnzbdplus/${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}-src.tar.gz"
-PKG_DEPENDS="Python Cheetah pyOpenSSL yenc unrar unzip par2cmdline"
-PKG_BUILD_DEPENDS="toolchain Python Cheetah pyOpenSSL yenc unrar unzip par2cmdline"
-PKG_PRIORITY="optional"
-PKG_SECTION="service/downloadmanager"
-PKG_SHORTDESC="SABnzbd makes Usenet as simple and streamlined as possible by automating everything we can."
-PKG_LONGDESC="SABnzbd makes Usenet as simple and streamlined as possible by automating everything we can. All you have to do is add a .nzb file. SABnzbd+ takes over from there, where it will be automatically downloaded, verified, repaired, extracted and filed away with zero human interaction."
+. config/options $1
 
-PKG_IS_ADDON="no"
+mkdir -p $ADDON_BUILD/$PKG_ADDON_ID
+  cp -PR $PKG_DIR/config/settings.xml* $ADDON_BUILD/$PKG_ADDON_ID/settings-default.xml
 
-PKG_AUTORECONF="no"
+mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
+  cp -R $BUILD/Cheetah*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
+
+mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/SickBeard
+  cp -PR $BUILD/SickBeard-*/* $ADDON_BUILD/$PKG_ADDON_ID/SickBeard
+
+mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/CouchPotatoServer
+  cp -PR $BUILD/CouchPotatoServer-*/* $ADDON_BUILD/$PKG_ADDON_ID/CouchPotatoServer
+
+mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/Headphones
+  cp -PR $BUILD/Headphones-*/* $ADDON_BUILD/$PKG_ADDON_ID/Headphones

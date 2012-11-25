@@ -1,3 +1,11 @@
+3.0.1
+- update to SABnzbd-0.7.6
+- update to CouchPotato-135b333
+- update to CouchPotatoServer-3ecc826
+- update to Headphones-4da40d4
+- update to SickBeard-bc3dafa
+- corrected some bugs in writing config files
+
 2.1.8
 - update to SABnzbd-0.7.3
 - update to CouchPotato-806bed6

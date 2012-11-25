@@ -18,20 +18,30 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME="SABnzbd"
-PKG_VERSION="0.7.6"
-PKG_REV="1"
-PKG_ARCH="any"
-PKG_LICENSE="OSS"
-PKG_SITE="http://sabnzbd.org/"
-PKG_URL="$SOURCEFORGE_SRC/sabnzbdplus/sabnzbdplus/${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}-src.tar.gz"
-PKG_DEPENDS="Python Cheetah pyOpenSSL yenc unrar unzip par2cmdline"
-PKG_BUILD_DEPENDS="toolchain Python Cheetah pyOpenSSL yenc unrar unzip par2cmdline"
-PKG_PRIORITY="optional"
-PKG_SECTION="service/downloadmanager"
-PKG_SHORTDESC="SABnzbd makes Usenet as simple and streamlined as possible by automating everything we can."
-PKG_LONGDESC="SABnzbd makes Usenet as simple and streamlined as possible by automating everything we can. All you have to do is add a .nzb file. SABnzbd+ takes over from there, where it will be automatically downloaded, verified, repaired, extracted and filed away with zero human interaction."
+import os
+import sys
+import xbmc
+import xbmcaddon
+import time
+import subprocess
 
-PKG_IS_ADDON="no"
 
-PKG_AUTORECONF="no"
+__scriptname__ = "SickPotatoHead"
+__author__     = "lsellens"
+__url__        = "http://dl.dropbox.com/u/42265484/repository.sickpotatohead/repo"
+__settings__   = xbmcaddon.Addon(id='service.downloadmanager.SickPotatoHead')
+__cwd__        = __settings__.getAddonInfo('path')
+__start__      = xbmc.translatePath( os.path.join( __cwd__, 'bin', "SickPotatoHead.py") )
+__stop__       = xbmc.translatePath( os.path.join( __cwd__, 'bin', "SickPotatoHead.stop") )
+
+
+#make binary files executable in addons bin folder
+subprocess.Popen("chmod -R +x " + __cwd__ + "/bin/*" , shell=True, close_fds=True)
+
+subprocess.call(['python',__start__])
+
+while (not xbmc.abortRequested):
+    time.sleep(0.250)
+
+subprocess.Popen(__stop__, shell=True, close_fds=True)
+

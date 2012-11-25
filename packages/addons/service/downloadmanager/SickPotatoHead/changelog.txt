@@ -1,0 +1,2 @@
+1.0.0
+- initial version forked from SABnzbd-Suite-2.8.1

@@ -20,14 +20,14 @@
 ################################################################################
 
 PKG_NAME="Headphones"
-PKG_VERSION="d07dc39"
+PKG_VERSION="4da40d4"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="OSS"
 PKG_SITE="http://github.com/rembo10/headphones"
-PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="Python SABnzbd"
-PKG_BUILD_DEPENDS="toolchain Python"
+PKG_URL="$LSELLENS_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_DEPENDS="Python"
+PKG_BUILD_DEPENDS=""
 PKG_PRIORITY="optional"
 PKG_SECTION="service/downloadmanager"
 PKG_SHORTDESC="Headphones: Automatic music downloader for SABnzbd."
