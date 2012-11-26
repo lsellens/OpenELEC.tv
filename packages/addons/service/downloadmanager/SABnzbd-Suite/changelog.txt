@@ -1,3 +1,7 @@
+3.0.2
+- corrected a bug with transmission auth
+- corrected a bug causing most of the suite to crash on first launch in certain circumstances
+
 3.0.1
 - update to SABnzbd-0.7.6
 - update to CouchPotato-135b333

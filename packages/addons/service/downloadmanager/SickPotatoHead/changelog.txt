@@ -1,2 +1,5 @@
+1.0.1
+- corrected a bug with transmission auth
+
 1.0.0
 - initial version forked from SABnzbd-Suite-2.8.1

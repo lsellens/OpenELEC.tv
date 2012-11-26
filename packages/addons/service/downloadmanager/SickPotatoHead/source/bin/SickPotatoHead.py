@@ -22,6 +22,7 @@
 
 import os
 import shutil
+import xbmc
 import subprocess
 import hashlib
 import signal
@@ -100,7 +101,7 @@ if os.path.exists(pTransmission_Addon_Settings):
     transpwd                           = getAddonSetting(transmission_addon_settings, 'TRANSMISSION_PWD')
     transauth                          = getAddonSetting(transmission_addon_settings, 'TRANSMISSION_AUTH')
 else:
-    transauth                          = false
+    transauth                          = 'false'
 
 # SickPotatoHead-Suite
 fSuiteSettings = open(pSuiteSettings, 'r')

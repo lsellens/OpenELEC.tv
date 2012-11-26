@@ -62,8 +62,8 @@ def loadWebInterface(url,user,pwd):
 # ------------------------------------------------------
 
 # addon
-pAddon                = os.path.expanduser('~/.xbmc/addons/service.downloadmanager.SABnzbd-Suite')
-pAddonHome            = os.path.expanduser('~/.xbmc/userdata/addon_data/service.downloadmanager.SABnzbd-Suite')
+pAddon                = os.path.expanduser('/storage/.xbmc/addons/service.downloadmanager.SABnzbd-Suite')
+pAddonHome            = os.path.expanduser('/storage/.xbmc/userdata/addon_data/service.downloadmanager.SABnzbd-Suite')
 
 # settings
 pDefaultSuiteSettings = os.path.join(pAddon, 'settings-default.xml')
@@ -147,7 +147,7 @@ if os.path.exists(pTransmission_Addon_Settings):
     transpwd                           = getAddonSetting(transmission_addon_settings, 'TRANSMISSION_PWD')
     transauth                          = getAddonSetting(transmission_addon_settings, 'TRANSMISSION_AUTH')
 else:
-    transauth                          = false
+    transauth                          = 'false'
 
 # SABnzbd-Suite
 fSuiteSettings = open(pSuiteSettings, 'r')
@@ -279,6 +279,8 @@ try:
         sabNzbdConfig.reload()
         sabNzbdApiKey = sabNzbdConfig['misc']['api_key']
         logging.debug('SABnzbd api key: ' + sabNzbdApiKey)
+        if firstLaunch and "false" in sabnzbd_launch:
+            urllib2.urlopen('http://' + sabNzbdHost + '/api?mode=shutdown&apikey=' + sabNzbdApiKey)
 except Exception,e:
     print 'SABnzbd: exception occurred:', e
     print traceback.format_exc()
@@ -299,17 +301,18 @@ try:
     defaultConfig['General']['web_host']       = host
     defaultConfig['General']['web_username']   = user
     defaultConfig['General']['web_password']   = pwd
-    if "true" in sabnzbd_launch:
-        defaultConfig['SABnzbd'] = {}
-        defaultConfig['SABnzbd']['sab_username']   = user
-        defaultConfig['SABnzbd']['sab_password']   = pwd
-        defaultConfig['SABnzbd']['sab_apikey']     = sabNzbdApiKey
-        defaultConfig['SABnzbd']['sab_host']       = 'http://' + sabNzbdHost + '/'
+    defaultConfig['SABnzbd'] = {}
     defaultConfig['XBMC'] = {}
     defaultConfig['XBMC']['use_xbmc']          = '1'
     defaultConfig['XBMC']['xbmc_host']         = '127.0.0.1:' + xbmcPort
     defaultConfig['XBMC']['xbmc_username']     = xbmcUser
     defaultConfig['XBMC']['xbmc_password']     = xbmcPwd
+
+    if "true" in sabnzbd_launch:
+        defaultConfig['SABnzbd']['sab_username']   = user
+        defaultConfig['SABnzbd']['sab_password']   = pwd
+        defaultConfig['SABnzbd']['sab_apikey']     = sabNzbdApiKey
+        defaultConfig['SABnzbd']['sab_host']       = 'http://' + sabNzbdHost + '/'
 
     if sbfirstLaunch:
         defaultConfig['General']['metadata_xbmc']         = '1|1|1|1|1|1'
@@ -357,17 +360,18 @@ try:
     defaultConfig['global']['username']      = user
     defaultConfig['global']['port']          = '8083'
     defaultConfig['global']['host']          = host
-    if "true" in sabnzbd_launch:
-        defaultConfig['Sabnzbd'] = {}
-        defaultConfig['Sabnzbd']['username']     = user
-        defaultConfig['Sabnzbd']['password']     = pwd
-        defaultConfig['Sabnzbd']['apikey']       = sabNzbdApiKey
-        defaultConfig['Sabnzbd']['host']         = sabNzbdHost
     defaultConfig['XBMC'] = {}
     defaultConfig['XBMC']['enabled']         = 'True'
     defaultConfig['XBMC']['host']            = '127.0.0.1:' + xbmcPort
     defaultConfig['XBMC']['username']        = xbmcUser
     defaultConfig['XBMC']['password']        = xbmcPwd
+    defaultConfig['Sabnzbd'] = {}
+
+    if "true" in sabnzbd_launch:
+        defaultConfig['Sabnzbd']['username']     = user
+        defaultConfig['Sabnzbd']['password']     = pwd
+        defaultConfig['Sabnzbd']['apikey']       = sabNzbdApiKey
+        defaultConfig['Sabnzbd']['host']         = sabNzbdHost
 
     if cpfirstLaunch:
         defaultConfig['Sabnzbd']['category']     = 'movies'
@@ -427,9 +431,9 @@ try:
     defaultConfig['xbmc']['host']            = '127.0.0.1:' + xbmcPort
     defaultConfig['xbmc']['username']        = xbmcUser
     defaultConfig['xbmc']['password']        = xbmcPwd
+    defaultConfig['Sabnzbd'] = {}
 
     if "true" in sabnzbd_launch:
-        defaultConfig['Sabnzbd'] = {}
         defaultConfig['Sabnzbd']['username']     = user
         defaultConfig['Sabnzbd']['password']     = pwd
         defaultConfig['Sabnzbd']['api_key']      = sabNzbdApiKey
@@ -492,9 +496,9 @@ try:
     defaultConfig['XBMC']['xbmc_host']                    = '127.0.0.1:' + xbmcPort
     defaultConfig['XBMC']['xbmc_username']                = xbmcUser
     defaultConfig['XBMC']['xbmc_password']                = xbmcPwd
+    defaultConfig['SABnzbd'] = {}
 
     if "true" in sabnzbd_launch:
-        defaultConfig['SABnzbd'] = {}
         defaultConfig['SABnzbd']['sab_apikey']       = sabNzbdApiKey
         defaultConfig['SABnzbd']['sab_host']         = sabNzbdHost
         defaultConfig['SABnzbd']['sab_username']     = user
