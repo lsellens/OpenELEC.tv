@@ -90,7 +90,7 @@ if [ -f $PKG_DIR/addon ]; then
 
   cd $ADDON_BUILD
     echo "*** compressing Addon $PKG_ADDON_ID ... ***"
-    zip -rq $PKG_ADDON_ID-$PKG_VERSION.$PKG_REV.zip $PKG_ADDON_ID;
+    zip -rq9 $PKG_ADDON_ID-$PKG_VERSION.$PKG_REV.zip $PKG_ADDON_ID;
   cd -
 
   mkdir -p $TARGET/$ADDONS/$ADDON_VERSION/$PROJECT/$TARGET_ARCH/$PKG_ADDON_ID

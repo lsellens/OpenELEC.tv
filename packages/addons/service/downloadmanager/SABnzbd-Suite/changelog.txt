@@ -1,3 +1,36 @@
+3.1.0
+- fixed eztv's fallback to twitter feed in sickbeard
+- update to CouchPotatoServer-393c14d
+
+3.0.9
+- update to CouchPotatoServer-d172828
+- update to SABnzbd-0.7.8
+
+3.0.8
+- update to CouchPotatoServer-7e62342
+- update to Headphones-cb52d97
+
+3.0.7
+- updated SickBeard to fixed notifications in frodo
+
+3.0.6
+- removed couchpotato ver 1
+- update to CouchPotatoServer-985a168
+- update to Headphones-de60e6f
+- update to SABnzbd-0.7.7
+
+3.0.5
+- fixed SABnzbd SSL
+- update to CouchPotatoServer-6618c39
+
+3.0.4
+- made addon settings accessible from programs menu
+- update to Headphones-ff4ee1f
+- update to CouchPotatoServer-4b58b40
+
+3.0.3
+- Fixed bug causing configobj to throw an exception with Couchpotato v2s config
+
 3.0.2
 - corrected a bug with transmission auth
 - corrected a bug causing most of the suite to crash on first launch in certain circumstances

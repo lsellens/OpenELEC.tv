@@ -34,15 +34,13 @@ mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -R $BUILD/Cheetah*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -R $BUILD/pyOpenSSL*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -R $BUILD/yenc*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
+  rm -rf $ADDON_BUILD/$PKG_ADDON_ID/pylib/*.egg-info
 
 mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/SABnzbd
   cp -PR $BUILD/SABnzbd-*/* $ADDON_BUILD/$PKG_ADDON_ID/SABnzbd
 
 mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/SickBeard
   cp -PR $BUILD/SickBeard-*/* $ADDON_BUILD/$PKG_ADDON_ID/SickBeard
-
-mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/CouchPotato
-  cp -PR $BUILD/CouchPotato-*/* $ADDON_BUILD/$PKG_ADDON_ID/CouchPotato
 
 mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/CouchPotatoServer
   cp -PR $BUILD/CouchPotatoServer-*/* $ADDON_BUILD/$PKG_ADDON_ID/CouchPotatoServer

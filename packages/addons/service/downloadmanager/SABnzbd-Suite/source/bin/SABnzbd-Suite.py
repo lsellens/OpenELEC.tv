@@ -22,7 +22,6 @@
 
 import os
 import shutil
-import xbmc
 import signal
 import subprocess
 import urllib2
@@ -62,8 +61,8 @@ def loadWebInterface(url,user,pwd):
 # ------------------------------------------------------
 
 # addon
-pAddon                = os.path.expanduser('/storage/.xbmc/addons/service.downloadmanager.SABnzbd-Suite')
-pAddonHome            = os.path.expanduser('/storage/.xbmc/userdata/addon_data/service.downloadmanager.SABnzbd-Suite')
+pAddon                = os.path.expanduser('~/.xbmc/addons/service.downloadmanager.SABnzbd-Suite')
+pAddonHome            = os.path.expanduser('~/.xbmc/userdata/addon_data/service.downloadmanager.SABnzbd-Suite')
 
 # settings
 pDefaultSuiteSettings = os.path.join(pAddon, 'settings-default.xml')
@@ -71,7 +70,6 @@ pSuiteSettings        = os.path.join(pAddonHome, 'settings.xml')
 pXbmcSettings         = '/storage/.xbmc/userdata/guisettings.xml'
 pSabNzbdSettings      = os.path.join(pAddonHome, 'sabnzbd.ini')
 pSickBeardSettings    = os.path.join(pAddonHome, 'sickbeard.ini')
-pCouchPotatoSettings  = os.path.join(pAddonHome, 'couchpotato.ini')
 pCouchPotatoServerSettings  = os.path.join(pAddonHome, 'couchpotatoserver.ini')
 pHeadphonesSettings   = os.path.join(pAddonHome, 'headphones.ini')
 pTransmission_Addon_Settings  ='/storage/.xbmc/userdata/addon_data/service.downloadmanager.transmission/settings.xml'
@@ -92,8 +90,6 @@ sabnzbd               = ['python', os.path.join(pAddon, 'SABnzbd/SABnzbd.py'),
                          '-d', '-f',  pSabNzbdSettings, '-l 0']
 sickBeard             = ['python', os.path.join(pAddon, 'SickBeard/SickBeard.py'),
                          '--daemon', '--datadir', pAddonHome, '--config', pSickBeardSettings]
-couchPotato           = ['python', os.path.join(pAddon, 'CouchPotato/CouchPotato.py'),
-                         '-d', '--datadir', pAddonHome, '--config', pCouchPotatoSettings]
 couchPotatoServer     = ['python', os.path.join(pAddon, 'CouchPotatoServer/CouchPotato.py'),
                          '--daemon', '--pid_file', os.path.join(pAddonHome, 'couchpotato.pid'), '--config_file', pCouchPotatoServerSettings]
 headphones            = ['python', os.path.join(pAddon, 'Headphones/Headphones.py'),
@@ -108,7 +104,6 @@ addonId               = 'service.downloadmanager.SABnzbd-Suite'
 
 firstLaunch = not os.path.exists(pSabNzbdSettings)
 sbfirstLaunch = not os.path.exists(pSickBeardSettings)
-cpfirstLaunch = not os.path.exists(pCouchPotatoSettings)
 cp2firstLaunch = not os.path.exists(pCouchPotatoServerSettings)
 hpfirstLaunch = not os.path.exists(pHeadphonesSettings)
 
@@ -123,6 +118,7 @@ if firstLaunch:
     shutil.copy(os.path.join(pSickBeardTvScripts,'sabToSickBeard.py'), pSabNzbdScripts)
     shutil.copy(os.path.join(pSickBeardTvScripts,'autoProcessTV.py'), pSabNzbdScripts)
     os.chmod(os.path.join(pSabNzbdScripts,'sabToSickBeard.py'), 0755)
+
     # make utilities executable
     for utility in {'par2','unrar','unzip'}:
         try:
@@ -161,7 +157,6 @@ sabNzbdKeepAwake     = getAddonSetting(suiteSettings, 'SABNZBD_KEEP_AWAKE')
 sabnzbd_launch       = getAddonSetting(suiteSettings, 'SABNZBD_LAUNCH')
 sickbeard_launch     = getAddonSetting(suiteSettings, 'SICKBEARD_LAUNCH')
 couchpotato_launch   = getAddonSetting(suiteSettings, 'COUCHPOTATO_LAUNCH')
-couchpotato_version  = getAddonSetting(suiteSettings, 'COUCHPOTATO_VERSION')
 headphones_launch    = getAddonSetting(suiteSettings, 'HEADPHONES_LAUNCH')
 
 # merge defaults
@@ -175,8 +170,6 @@ if not sickbeard_launch:
     sickbeard_launch     = getAddonSetting(DefaultSuiteSettings, 'SICKBEARD_LAUNCH')
 if not couchpotato_launch:
     couchpotato_launch   = getAddonSetting(DefaultSuiteSettings, 'COUCHPOTATO_LAUNCH')
-if not couchpotato_version:
-    couchpotato_version  = getAddonSetting(DefaultSuiteSettings, 'COUCHPOTATO_VERSION')
 if not headphones_launch:
     headphones_launch    = getAddonSetting(DefaultSuiteSettings, 'HEADPHONES_LAUNCH')
 
@@ -198,7 +191,6 @@ except:
 
 # prepare execution environment
 # -----------------------------
-
 signal.signal(signal.SIGCHLD, signal.SIG_DFL)
 os.environ['PYTHONPATH'] = str(os.environ.get('PYTHONPATH')) + ':' + pPylib
 
@@ -314,6 +306,13 @@ try:
         defaultConfig['SABnzbd']['sab_apikey']     = sabNzbdApiKey
         defaultConfig['SABnzbd']['sab_host']       = 'http://' + sabNzbdHost + '/'
 
+#    if 'true' in transauth:
+#        defaultConfig['torrent'] = {}
+#        defaultConfig['torrent']['torrent_username']      = transuser
+#        defaultConfig['torrent']['torrent_password']      = transpwd
+#        defaultConfig['torrent']['torrent_path']          = pSabNzbdCompleteMov
+#        defaultConfig['torrent']['torrent_host']          = 'localhost:9091'
+
     if sbfirstLaunch:
         defaultConfig['General']['metadata_xbmc']         = '1|1|1|1|1|1'
         defaultConfig['General']['nzb_method']            = 'sabnzbd'
@@ -347,56 +346,6 @@ except Exception,e:
     print traceback.format_exc()
 # SickBeard end
 
-# CouchPotato start
-try:
-    # write CouchPotato settings
-    # --------------------------
-    couchPotatoConfig = ConfigObj(pCouchPotatoSettings,create_empty=True)
-    defaultConfig = ConfigObj()
-    defaultConfig['global'] = {}
-    defaultConfig['global']['launchbrowser'] = 'False'
-    defaultConfig['global']['updater']       = 'False'
-    defaultConfig['global']['password']      = pwd
-    defaultConfig['global']['username']      = user
-    defaultConfig['global']['port']          = '8083'
-    defaultConfig['global']['host']          = host
-    defaultConfig['XBMC'] = {}
-    defaultConfig['XBMC']['enabled']         = 'True'
-    defaultConfig['XBMC']['host']            = '127.0.0.1:' + xbmcPort
-    defaultConfig['XBMC']['username']        = xbmcUser
-    defaultConfig['XBMC']['password']        = xbmcPwd
-    defaultConfig['Sabnzbd'] = {}
-
-    if "true" in sabnzbd_launch:
-        defaultConfig['Sabnzbd']['username']     = user
-        defaultConfig['Sabnzbd']['password']     = pwd
-        defaultConfig['Sabnzbd']['apikey']       = sabNzbdApiKey
-        defaultConfig['Sabnzbd']['host']         = sabNzbdHost
-
-    if cpfirstLaunch:
-        defaultConfig['Sabnzbd']['category']     = 'movies'
-        defaultConfig['Sabnzbd']['ppdir']        = pSabNzbdCompleteMov
-        defaultConfig['Renamer'] = {}
-        defaultConfig['Renamer']['enabled']      = 'True'
-        defaultConfig['Renamer']['download']     = pSabNzbdCompleteMov
-        defaultConfig['Renamer']['destination']  = '/storage/videos'
-        defaultConfig['Renamer']['separator']    = '.'
-        defaultConfig['Renamer']['cleanup']      = 'True'
-
-    couchPotatoConfig.merge(defaultConfig)
-    couchPotatoConfig.write()
-
-    # launch CouchPotato
-    # ------------------
-    if "true" in couchpotato_launch and "0" in couchpotato_version:
-        logging.debug('Launching CouchPotato...')
-        subprocess.call(couchPotato,close_fds=True)
-        logging.debug('...done')
-except Exception,e:
-    print 'CouchPotato: exception occurred:', e
-    print traceback.format_exc()
-# CouchPotato end
-
 # CouchPotatoServer start
 try:
     # empty password hack
@@ -408,7 +357,7 @@ try:
 
     # write CouchPotatoServer settings
     # --------------------------
-    couchPotatoServerConfig = ConfigObj(pCouchPotatoServerSettings,create_empty=True)
+    couchPotatoServerConfig = ConfigObj(pCouchPotatoServerSettings,create_empty=True, list_values=False)
     defaultConfig = ConfigObj()
     defaultConfig['core'] = {}
     defaultConfig['core']['username']            = user
@@ -427,10 +376,10 @@ try:
     defaultConfig['updater']['notification']     = '0'
     defaultConfig['updater']['automatic']        = '0'
     defaultConfig['xbmc'] = {}
-    defaultConfig['xbmc']['enabled']         = '1'
-    defaultConfig['xbmc']['host']            = '127.0.0.1:' + xbmcPort
-    defaultConfig['xbmc']['username']        = xbmcUser
-    defaultConfig['xbmc']['password']        = xbmcPwd
+    defaultConfig['xbmc']['enabled']             = '1'
+    defaultConfig['xbmc']['host']                = '127.0.0.1:' + xbmcPort
+    defaultConfig['xbmc']['username']            = xbmcUser
+    defaultConfig['xbmc']['password']            = xbmcPwd
     defaultConfig['Sabnzbd'] = {}
 
     if "true" in sabnzbd_launch:
@@ -455,8 +404,8 @@ try:
         defaultConfig['Sabnzbd']['pp_directory'] = pSabNzbdCompleteMov
         defaultConfig['Renamer'] = {}
         defaultConfig['Renamer']['enabled']      = '1'
-        defaultConfig['Renamer']['download']     = pSabNzbdCompleteMov
-        defaultConfig['Renamer']['destination']  = '/storage/videos'
+        defaultConfig['Renamer']['from']         = pSabNzbdCompleteMov
+        defaultConfig['Renamer']['to']           = '/storage/videos'
         defaultConfig['Renamer']['separator']    = '.'
         defaultConfig['Renamer']['cleanup']      = '0'
 
@@ -465,7 +414,7 @@ try:
 
     # launch CouchPotatoServer
     # ------------------
-    if "true" in couchpotato_launch and "1" in couchpotato_version:
+    if "true" in couchpotato_launch:
         logging.debug('Launching CouchPotatoServer...')
         subprocess.call(couchPotatoServer,close_fds=True)
         logging.debug('...done')

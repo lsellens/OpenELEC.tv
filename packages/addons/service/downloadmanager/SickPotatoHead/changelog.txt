@@ -1,3 +1,16 @@
+1.0.3
+- No longer need to build for each platform it now detects architecture and uses _namemapper.so from cheetah for that build.
+- fixed eztv's fallback to twitter feed in sickbeard
+- updated SickBeard to fixed notifications in frodo
+- update to CouchPotatoServer-393c14d
+
+1.0.2
+- made addon settings accessible from programs menu
+- Fixed bug causing configobj to throw an exception with Couchpotato v2s config
+- update to CouchPotatoServer-7e62342
+- update to Headphones-cb52d97
+- updated SickBeard to fixed notifications in frodo
+
 1.0.1
 - corrected a bug with transmission auth
 
