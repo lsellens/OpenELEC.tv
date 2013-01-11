@@ -9,6 +9,7 @@ import signal
 from configobj import ConfigObj
 from xml.dom.minidom import parseString
 import traceback
+import platform
 
 # helper functions
 # ----------------

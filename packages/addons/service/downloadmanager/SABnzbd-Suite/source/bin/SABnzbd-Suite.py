@@ -30,6 +30,7 @@ from configobj import ConfigObj
 from xml.dom.minidom import parseString
 import logging
 import traceback
+import platform
 
 logging.basicConfig(filename='/var/log/sabnzbd-suite.log',
                     filemode='w',
@@ -61,8 +62,8 @@ def loadWebInterface(url,user,pwd):
 # ------------------------------------------------------
 
 # addon
-pAddon                = os.path.expanduser('~/.xbmc/addons/service.downloadmanager.SABnzbd-Suite')
-pAddonHome            = os.path.expanduser('~/.xbmc/userdata/addon_data/service.downloadmanager.SABnzbd-Suite')
+pAddon                = os.path.expanduser('/storage/.xbmc/addons/service.downloadmanager.SABnzbd-Suite')
+pAddonHome            = os.path.expanduser('/storage/.xbmc/userdata/addon_data/service.downloadmanager.SABnzbd-Suite')
 
 # settings
 pDefaultSuiteSettings = os.path.join(pAddon, 'settings-default.xml')
@@ -118,13 +119,6 @@ if firstLaunch:
     shutil.copy(os.path.join(pSickBeardTvScripts,'sabToSickBeard.py'), pSabNzbdScripts)
     shutil.copy(os.path.join(pSickBeardTvScripts,'autoProcessTV.py'), pSabNzbdScripts)
     os.chmod(os.path.join(pSabNzbdScripts,'sabToSickBeard.py'), 0755)
-
-    # make utilities executable
-    for utility in {'par2','unrar','unzip'}:
-        try:
-            os.chmod(os.path.join(pAddon, 'bin', utility), 0755)
-        except:
-            pass
 
 # the settings file already exists if the user set settings before the first launch
 if not os.path.exists(pSuiteSettings):
@@ -192,7 +186,48 @@ except:
 # prepare execution environment
 # -----------------------------
 signal.signal(signal.SIGCHLD, signal.SIG_DFL)
+parch                         = platform.machine()
+pnamemapper                   = os.path.join(pPylib, 'Cheetah/_namemapper.so')
+pssl                          = os.path.join(pPylib, 'OpenSSL/SSL.so')
+prand                         = os.path.join(pPylib, 'OpenSSL/rand.so')
+pcrypto                       = os.path.join(pPylib, 'OpenSSL/crypto.so')
+pyenc                         = os.path.join(pPylib, '_yenc.so')
+ppar2                         = os.path.join(pAddon, 'bin/par2')
+punrar                        = os.path.join(pAddon, 'bin/unrar')
+punzip                        = os.path.join(pAddon, 'bin/unzip')
+
+if not os.path.exists(pnamemapper):
+    fnamemapper                   = os.path.join(pPylib, 'multiarch/_namemapper.so.' + parch)
+    shutil.copy(fnamemapper, pnamemapper)
+if not os.path.exists(pssl):
+    fssl                          = os.path.join(pPylib, 'multiarch/SSL.so.' + parch)
+    shutil.copy(fssl, pssl)
+if not os.path.exists(prand):
+    frand                         = os.path.join(pPylib, 'multiarch/rand.so.' + parch)
+    shutil.copy(frand, prand)
+if not os.path.exists(pcrypto):
+    fcrypto                       = os.path.join(pPylib, 'multiarch/crypto.so.' + parch)
+    shutil.copy(fcrypto, pcrypto)
+if not os.path.exists(pyenc):
+    fyenc                         = os.path.join(pPylib, 'multiarch/_yenc.so.' + parch)
+    shutil.copy(fyenc, pyenc)
+if not os.path.exists(ppar2):
+    fpar2                         = os.path.join(pPylib, 'multiarch/par2.' + parch)
+    shutil.copy(fpar2, ppar2)
+if not os.path.exists(punrar):
+    funrar                        = os.path.join(pPylib, 'multiarch/unrar.' + parch)
+    shutil.copy(funrar, punrar)
+if not os.path.exists(punzip):
+    funzip                        = os.path.join(pPylib, 'multiarch/unzip.' + parch)
+    shutil.copy(funzip, punzip)
 os.environ['PYTHONPATH'] = str(os.environ.get('PYTHONPATH')) + ':' + pPylib
+
+# make utilities executable
+for utility in {'par2','unrar','unzip'}:
+    try:
+        os.chmod(os.path.join(pAddon, 'bin', utility), 0755)
+    except:
+        pass
 
 # SABnzbd start
 try:

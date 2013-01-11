@@ -39,7 +39,7 @@ __start__      = xbmc.translatePath( os.path.join( __cwd__, 'bin', "SABnzbd-Suit
 __stop__       = xbmc.translatePath( os.path.join( __cwd__, 'bin', "SABnzbd-Suite.stop") )
 
 #make binary files executable in addons bin folder
-subprocess.Popen("chmod -R +x " + __cwd__ + "/bin/*" , shell=True, close_fds=True)
+#subprocess.Popen("chmod -R +x " + __cwd__ + "/bin/*" , shell=True, close_fds=True)
 
 checkInterval  = 120
 timeout        = 20
