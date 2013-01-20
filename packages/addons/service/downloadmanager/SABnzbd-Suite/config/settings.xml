@@ -9,5 +9,4 @@
     <setting id="SICKBEARD_LAUNCH" value="true" />
     <setting id="COUCHPOTATO_LAUNCH" value="true" />
     <setting id="HEADPHONES_LAUNCH" value="true" />
-    <setting id="UPDATE" value="true" />
 </settings>

@@ -23,9 +23,6 @@
 		<setting id="SABNZBD_WAKE_AT" type="enum" subsetting="true" enable="eq(-1,true)" 
 		         label="3031" default="01" 
 		         values="|01:00|03:00|05:00|07:00|09:00|11:00|13:00|15:00|17:00|19:00|21:00|23:00"/>
-
-		<setting label="4010" type="lsep"/>
-		<setting type="sep" />
-		<setting id="UPDATE" type="bool" label="4021" default="false" visible="false"/>		
+	
     </category>
 </settings>
