@@ -1,8 +1,6 @@
-3.1.1
-- No longer need to build for each platform it now detects architecture and uses appropriate binaries
-- update to SABnzbd-0.7.9
-
 3.1.0
+- update to Headphones-263272c
+- update to SABnzbd-0.7.9
 - fixed eztv's fallback to twitter feed in sickbeard
 - update to CouchPotatoServer-393c14d
 

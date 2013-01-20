@@ -1,7 +1,9 @@
+1.0.4
+- update to Headphones-263272c
+
 1.0.3
 - No longer need to build for each platform it now detects architecture and uses _namemapper.so from cheetah for that build.
 - fixed eztv's fallback to twitter feed in sickbeard
-- updated SickBeard to fixed notifications in frodo
 - update to CouchPotatoServer-393c14d
 
 1.0.2

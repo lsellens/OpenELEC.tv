@@ -27,6 +27,21 @@ __scriptname__ = "SABnzbd Suite"
 __author__     = "OpenELEC"
 __url__        = "http://www.openelec.tv"
 __settings__   = xbmcaddon.Addon(id='service.downloadmanager.SABnzbd-Suite')
+__cwd__        = __settings__.getAddonInfo('path')
+__start__      = xbmc.translatePath( os.path.join( __cwd__, "service.py") )
+__stop__       = xbmc.translatePath( os.path.join( __cwd__, 'bin', "SABnzbd-Suite.stop") )
 
+#Stoping the service
+subprocess.Popen(__stop__, shell=True, close_fds=True)
+xbmc.executebuiltin("XBMC.Notification('SABnzbd-Suite', 'Shuting down Services', '5000', %s)" % ( __cwd__ + '/icon.png'))
+
+#Open settings dialog
 if __name__ == '__main__':
     __settings__.openSettings()
+
+#Restarting the service
+xbmc.executebuiltin("XBMC.Notification('SABnzbd-Suite', 'Starting Services', '500', %s)" % ( __cwd__ + '/icon.png'))
+subprocess.call(['python',__start__])
+
+#Sending a notification for debugging
+xbmc.executebuiltin("XBMC.Notification('SABnzbd-Suite', 'Shuting down Services', '5000', %s)" % ( __cwd__ + '/icon.png'))
