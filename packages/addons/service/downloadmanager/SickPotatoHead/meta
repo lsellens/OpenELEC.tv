@@ -19,14 +19,14 @@
 ################################################################################
 
 PKG_NAME="SickPotatoHead"
-PKG_VERSION="1.0"
-PKG_REV="4"
+PKG_VERSION="1.1"
+PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="OSS"
 PKG_SITE="http://dl.dropbox.com/u/42265484/repository.lsellens/"$TARGET_ARCH"repository.SickPotatoHead/"
 PKG_URL=""
 PKG_DEPENDS="Python"
-PKG_BUILD_DEPENDS="SickBeard Headphones CouchPotatoServer"
+PKG_BUILD_DEPENDS="SickBeard Headphones CouchPotatoServer configobj"
 PKG_PRIORITY="optional"
 PKG_SECTION="service/downloadmanager"
 PKG_SHORTDESC="SickPotatoHead is a Metapackage which combines SickBeard, Couchpotato V2 and Headphones in one Addon built from SABnzdb-Suite"

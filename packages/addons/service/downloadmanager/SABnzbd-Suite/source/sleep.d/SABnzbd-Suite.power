@@ -20,15 +20,32 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-. config/options $1
+. /etc/profile
 
-export PYTHONXCPREFIX="$SYSROOT_PREFIX/usr"
-export LDFLAGS="$LDFLAGS -L$SYSROOT_PREFIX/usr/lib -L$SYSROOT_PREFIX/lib"
+ADDON_HOME="$HOME/.xbmc/userdata/addon_data/service.downloadmanager.SABnzbd-Suite"
+ADDON_SETTINGS="$ADDON_HOME/settings.xml"
+RESTART_ON_RESUME=`grep RESTART_ON_RESUME $ADDON_SETTINGS | awk '{print $3}' | sed -e "s,value=,," -e "s,\",,g"`
 
-cd $PKG_BUILD
+LOCKFILE="/var/lock/SABnzbd-Suite.sleep"
 
-python setup.py build --cross-compile
-python setup.py install --root=./.install --prefix=/usr
+if [ "$RESTART_ON_RESUME" == "true" ] ; then
+  case "$1" in
+    hibernate|suspend)
+      if [ ! -z "`ps | grep -E 'python.*service.downloadmanager.SABnzbd-Suite' | awk '{print $1}'`" ] ; then
+        progress "Shutting down SABnzbd-Suite for suspending..."
+        SABnzbd-Suite.stop
+        touch $LOCKFILE
+      fi
+      ;;
 
-rm -rf .install/usr/bin
-rm -rf .install/usr/lib/python*/site-packages/*.py
+    thaw|resume)
+      progress "Restarting SABnzbd-Suite for wakeup..."
+      if [ -f "$LOCKFILE" ] ; then
+        rm -rf "$LOCKFILE"
+        python $HOME/.xbmc/addons/service.downloadmanager.SABnzbd-Suite/bin/SABnzbd-Suite.py
+      fi
+      ;;
+    *) exit $NA
+      ;;
+  esac
+fi

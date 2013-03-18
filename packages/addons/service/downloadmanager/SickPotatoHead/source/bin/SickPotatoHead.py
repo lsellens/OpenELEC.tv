@@ -1,15 +1,20 @@
 # Initializes and launches Couchpotato V2, Sickbeard and Headphones
 
 import os
+import sys
 import shutil
-import xbmc
 import subprocess
 import hashlib
 import signal
-from configobj import ConfigObj
 from xml.dom.minidom import parseString
+import logging
 import traceback
 import platform
+
+logging.basicConfig(filename='/var/log/sickpotatohead.log',
+                    filemode='w',
+                    format='%(asctime)s SickPotatoHead: %(message)s',
+                    level=logging.WARNING)
 
 # helper functions
 # ----------------
@@ -127,15 +132,24 @@ except:
 # prepare execution environment
 # -----------------------------
 signal.signal(signal.SIGCHLD, signal.SIG_DFL)
+pPylib                        = os.path.join(pAddon, 'pylib')
 if "true" in sickbeard_launch:
-    pPylib                        = os.path.join(pAddon, 'pylib')
     pnamemapper                   = os.path.join(pPylib, 'Cheetah/_namemapper.so')
     if not os.path.exists(pnamemapper):
-        parch                         = platform.machine()
-        pmultiarch                    = os.path.join(pPylib, 'multiarch/_namemapper.so.' + parch)
-        shutil.copy(pmultiarch, pnamemapper)
-    os.environ['PYTHONPATH']      = str(os.environ.get('PYTHONPATH')) + ':' + pPylib
-
+        try:
+            parch                         = platform.machine()
+            if parch.startswith('arm'):
+                parch = 'arm'
+            pmultiarch                    = os.path.join(pPylib, 'multiarch/_namemapper.so.' + parch)
+            shutil.copy(pmultiarch, pnamemapper)
+            logging.debug('Copied _namemapper.so for ' + parch)
+        except Exception,e:
+            logging.error('Error Copying _namemapper.so for ' + parch)
+            logging.exception(e)
+        
+os.environ['PYTHONPATH']      = str(os.environ.get('PYTHONPATH')) + ':' + pPylib
+sys.path.append(pPylib)
+from configobj import ConfigObj
 
 # SickBeard start
 try:
@@ -188,6 +202,7 @@ try:
     if "true" in sickbeard_launch:
         subprocess.call(sickBeard,close_fds=True)
 except Exception,e:
+    logging.exception(e)
     print 'SickBeard: exception occurred:', e
     print traceback.format_exc()
 # SickBeard end
@@ -224,6 +239,7 @@ try:
     defaultConfig['xbmc']['host']                   = '127.0.0.1:' + xbmcPort
     defaultConfig['xbmc']['username']               = xbmcUser
     defaultConfig['xbmc']['password']               = xbmcPwd
+
     if 'true' in transauth:
         defaultConfig['transmission'] = {}
         defaultConfig['transmission']['username']         = transuser
@@ -262,6 +278,7 @@ try:
     if "true" in couchpotato_launch:
         subprocess.call(couchPotatoServer,close_fds=True)
 except Exception,e:
+    logging.exception(e)
     print 'CouchPotatoServer: exception occurred:', e
     print traceback.format_exc()
 # CouchPotatoServer end
@@ -305,6 +322,7 @@ try:
     if "true" in headphones_launch:
         subprocess.call(headphones,close_fds=True)
 except Exception,e:
+    logging.exception(e)
     print 'Headphones: exception occurred:', e
     print traceback.format_exc()
 # Headphones end

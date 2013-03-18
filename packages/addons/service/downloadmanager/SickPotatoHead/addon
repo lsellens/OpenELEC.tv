@@ -27,6 +27,7 @@ mkdir -p $ADDON_BUILD/$PKG_ADDON_ID
 
 mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -R $BUILD/Cheetah*/.install/usr/lib/python*/site-packages/Cheetah $ADDON_BUILD/$PKG_ADDON_ID/pylib
+  cp -R $BUILD/configobj*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
   rm $ADDON_BUILD/$PKG_ADDON_ID/pylib/Cheetah/_namemapper.so
 
 mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/SickBeard

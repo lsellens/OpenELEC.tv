@@ -21,12 +21,12 @@
 # Initializes and launches SABnzbd, Couchpotato, Sickbeard and Headphones
 
 import os
+import sys
 import shutil
 import signal
 import subprocess
 import urllib2
 import hashlib
-from configobj import ConfigObj
 from xml.dom.minidom import parseString
 import logging
 import traceback
@@ -196,38 +196,87 @@ ppar2                         = os.path.join(pAddon, 'bin/par2')
 punrar                        = os.path.join(pAddon, 'bin/unrar')
 punzip                        = os.path.join(pAddon, 'bin/unzip')
 
-if not os.path.exists(pnamemapper):
-    fnamemapper                   = os.path.join(pPylib, 'multiarch/_namemapper.so.' + parch)
-    shutil.copy(fnamemapper, pnamemapper)
-if not os.path.exists(pssl):
-    fssl                          = os.path.join(pPylib, 'multiarch/SSL.so.' + parch)
-    shutil.copy(fssl, pssl)
-if not os.path.exists(prand):
-    frand                         = os.path.join(pPylib, 'multiarch/rand.so.' + parch)
-    shutil.copy(frand, prand)
-if not os.path.exists(pcrypto):
-    fcrypto                       = os.path.join(pPylib, 'multiarch/crypto.so.' + parch)
-    shutil.copy(fcrypto, pcrypto)
-if not os.path.exists(pyenc):
-    fyenc                         = os.path.join(pPylib, 'multiarch/_yenc.so.' + parch)
-    shutil.copy(fyenc, pyenc)
-if not os.path.exists(ppar2):
-    fpar2                         = os.path.join(pPylib, 'multiarch/par2.' + parch)
-    shutil.copy(fpar2, ppar2)
-if not os.path.exists(punrar):
-    funrar                        = os.path.join(pPylib, 'multiarch/unrar.' + parch)
-    shutil.copy(funrar, punrar)
-if not os.path.exists(punzip):
-    funzip                        = os.path.join(pPylib, 'multiarch/unzip.' + parch)
-    shutil.copy(funzip, punzip)
-os.environ['PYTHONPATH'] = str(os.environ.get('PYTHONPATH')) + ':' + pPylib
+if parch.startswith('arm'):
+   parch = 'arm'
 
-# make utilities executable
-for utility in {'par2','unrar','unzip'}:
+if not os.path.exists(pnamemapper):
     try:
-        os.chmod(os.path.join(pAddon, 'bin', utility), 0755)
-    except:
-        pass
+        fnamemapper                   = os.path.join(pPylib, 'multiarch/_namemapper.so.' + parch)
+        shutil.copy(fnamemapper, pnamemapper)
+        logging.debug('Copied _namemapper.so for ' + parch)
+    except Exception,e:
+        logging.error('Error Copying _namemapper.so for ' + parch)
+        logging.exception(e)
+
+if not os.path.exists(pssl):
+    try:
+        fssl                          = os.path.join(pPylib, 'multiarch/SSL.so.' + parch)
+        shutil.copy(fssl, pssl)
+        logging.debug('Copied SSL.so for ' + parch)
+    except Exception,e:
+        logging.error('Error Copying SSL.so for ' + parch)
+        logging.exception(e)
+
+if not os.path.exists(prand):
+    try:
+        frand                         = os.path.join(pPylib, 'multiarch/rand.so.' + parch)
+        shutil.copy(frand, prand)
+        logging.debug('Copied rand.so for ' + parch)
+    except Exception,e:
+        logging.error('Error Copying rand.so for ' + parch)
+        logging.exception(e)
+
+if not os.path.exists(pcrypto):
+    try:
+        fcrypto                       = os.path.join(pPylib, 'multiarch/crypto.so.' + parch)
+        shutil.copy(fcrypto, pcrypto)
+        logging.debug('Copied crypto.so for ' + parch)
+    except Exception,e:
+        logging.error('Error Copying crypto.so for ' + parch)
+        logging.exception(e)
+
+if not os.path.exists(pyenc):
+    try:
+        fyenc                         = os.path.join(pPylib, 'multiarch/_yenc.so.' + parch)
+        shutil.copy(fyenc, pyenc)
+        logging.debug('Copied _yenc.so for ' + parch)
+    except Exception,e:
+        logging.error('Error Copying _yenc.so for ' + parch)
+        logging.exception(e)
+
+if not os.path.exists(ppar2):
+    try:
+        fpar2                         = os.path.join(pPylib, 'multiarch/par2.' + parch)
+        shutil.copy(fpar2, ppar2)
+        os.chmod(ppar2, 0755)
+        logging.debug('Copied par2 for ' + parch)
+    except Exception,e:
+        logging.error('Error Copying par2 for ' + parch)
+        logging.exception(e)
+
+if not os.path.exists(punrar):
+    try:
+        funrar                        = os.path.join(pPylib, 'multiarch/unrar.' + parch)
+        shutil.copy(funrar, punrar)
+        os.chmod(punrar, 0755)
+        logging.debug('Copied unrar for ' + parch)
+    except Exception,e:
+        logging.error('Error Copying unrar for ' + parch)
+        logging.exception(e)
+
+if not os.path.exists(punzip):
+    try:
+        funzip                        = os.path.join(pPylib, 'multiarch/unzip.' + parch)
+        shutil.copy(funzip, punzip)
+        os.chmod(punzip, 0755)
+        logging.debug('Copied unzip for ' + parch)
+    except Exception,e:
+        logging.error('Error Copying unzip for ' + parch)
+        logging.exception(e)
+
+os.environ['PYTHONPATH'] = str(os.environ.get('PYTHONPATH')) + ':' + pPylib
+sys.path.append(pPylib)
+from configobj import ConfigObj
 
 # SABnzbd start
 try:
@@ -309,6 +358,7 @@ try:
         if firstLaunch and "false" in sabnzbd_launch:
             urllib2.urlopen('http://' + sabNzbdHost + '/api?mode=shutdown&apikey=' + sabNzbdApiKey)
 except Exception,e:
+    logging.exception(e)
     print 'SABnzbd: exception occurred:', e
     print traceback.format_exc()
 # SABnzbd end
@@ -377,6 +427,7 @@ try:
         subprocess.call(sickBeard,close_fds=True)
         logging.debug('...done')
 except Exception,e:
+    logging.exception(e)
     print 'SickBeard: exception occurred:', e
     print traceback.format_exc()
 # SickBeard end
@@ -401,8 +452,6 @@ try:
     defaultConfig['core']['launch_browser']      = '0'
     defaultConfig['core']['host']                = host
     defaultConfig['core']['data_dir']            = pAddonHome
-    defaultConfig['core']['permission_folder']   = '0644'
-    defaultConfig['core']['permission_file']     = '0644'
     defaultConfig['core']['show_wizard']         = '0'
     defaultConfig['core']['debug']               = '0'
     defaultConfig['core']['development']         = '0'
@@ -443,6 +492,8 @@ try:
         defaultConfig['Renamer']['to']           = '/storage/videos'
         defaultConfig['Renamer']['separator']    = '.'
         defaultConfig['Renamer']['cleanup']      = '0'
+        defaultConfig['core']['permission_folder']   = '0644'
+        defaultConfig['core']['permission_file']     = '0644'
 
     couchPotatoServerConfig.merge(defaultConfig)
     couchPotatoServerConfig.write()
@@ -454,6 +505,7 @@ try:
         subprocess.call(couchPotatoServer,close_fds=True)
         logging.debug('...done')
 except Exception,e:
+    logging.exception(e)
     print 'CouchPotatoServer: exception occurred:', e
     print traceback.format_exc()
 # CouchPotatoServer end
@@ -474,7 +526,6 @@ try:
     defaultConfig['General']['check_github_on_startup']   = '0'
     defaultConfig['General']['cache_dir']                 = pAddonHome + '/hpcache'
     defaultConfig['General']['log_dir']                   = pAddonHome + '/logs'
-    defaultConfig['General']['folder_permissions']        = '0644'
     defaultConfig['XBMC'] = {}
     defaultConfig['XBMC']['xbmc_enabled']                 = '1'
     defaultConfig['XBMC']['xbmc_host']                    = '127.0.0.1:' + xbmcPort
@@ -483,20 +534,21 @@ try:
     defaultConfig['SABnzbd'] = {}
 
     if "true" in sabnzbd_launch:
-        defaultConfig['SABnzbd']['sab_apikey']       = sabNzbdApiKey
-        defaultConfig['SABnzbd']['sab_host']         = sabNzbdHost
-        defaultConfig['SABnzbd']['sab_username']     = user
-        defaultConfig['SABnzbd']['sab_password']     = pwd
+        defaultConfig['SABnzbd']['sab_apikey']         = sabNzbdApiKey
+        defaultConfig['SABnzbd']['sab_host']           = sabNzbdHost
+        defaultConfig['SABnzbd']['sab_username']       = user
+        defaultConfig['SABnzbd']['sab_password']       = pwd
 
     if hpfirstLaunch:
-        defaultConfig['SABnzbd']['sab_category']     = 'music'
-        defaultConfig['XBMC']['xbmc_update']         = '1'
-        defaultConfig['XBMC']['xbmc_notify']         = '1'
-        defaultConfig['General']['music_dir']        = '/storage/music'
-        defaultConfig['General']['destination_dir']  = '/storage/music'
-        defaultConfig['General']['download_dir']     = '/storage/downloads/music'
-        defaultConfig['General']['move_files']       = '1'
-        defaultConfig['General']['rename_files']     = '1'
+        defaultConfig['SABnzbd']['sab_category']       = 'music'
+        defaultConfig['XBMC']['xbmc_update']           = '1'
+        defaultConfig['XBMC']['xbmc_notify']           = '1'
+        defaultConfig['General']['music_dir']          = '/storage/music'
+        defaultConfig['General']['destination_dir']    = '/storage/music'
+        defaultConfig['General']['download_dir']       = '/storage/downloads/music'
+        defaultConfig['General']['move_files']         = '1'
+        defaultConfig['General']['rename_files']       = '1'
+        defaultConfig['General']['folder_permissions'] = '0644'
 
     headphonesConfig.merge(defaultConfig)
     headphonesConfig.write()
@@ -508,6 +560,7 @@ try:
         subprocess.call(headphones,close_fds=True)
         logging.debug('...done')
 except Exception,e:
+    logging.exception(e)
     print 'Headphones: exception occurred:', e
     print traceback.format_exc()
 # Headphones end

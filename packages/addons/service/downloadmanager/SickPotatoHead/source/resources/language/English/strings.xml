@@ -10,4 +10,5 @@
 	<string id="1026">Enable Headphones</string>
 	<string id="2010">Network Settings</string>
 	<string id="2021">Allowed IP addresses</string>
+        <string id="2022">Restart on suspend / resume</string>
 </strings>

@@ -34,6 +34,7 @@ mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -R $BUILD/Cheetah*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -R $BUILD/pyOpenSSL*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
   cp -R $BUILD/yenc*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
+  cp -R $BUILD/configobj*/.install/usr/lib/python*/site-packages/* $ADDON_BUILD/$PKG_ADDON_ID/pylib
   rm -rf $ADDON_BUILD/$PKG_ADDON_ID/pylib/*.egg-info
   rm -rf $ADDON_BUILD/$PKG_ADDON_ID/pylib/*.so
   rm -rf $ADDON_BUILD/$PKG_ADDON_ID/pylib/Cheetah/*.so
