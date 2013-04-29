@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
@@ -18,32 +20,13 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-#
-# start syslog daemon
-#
-# runlevels: openelec, textmode
+. config/options $1
 
-(
-  progress "Starting Syslog daemon"
+STAMP=$STAMPS/$1/unpack
 
-  if [ -e /storage/.cache/syslog/remote ] ; then
-    source /storage/.cache/syslog/remote
-  fi
+test $PKG_DIR/config/linux.$TARGET_ARCH.conf -nt $STAMP -o \
+     $PROJECT_DIR/$PROJECT/linux/linux.$TARGET_ARCH.conf -nt $STAMP -o \
+     $PKG_DIR/url -nt $STAMP -o \
+     $PKG_DIR/meta -nt $STAMP && rm -f $STAMP
 
-  SYSLOGD_OPTIONS="-L"
-
-  if [ "$SYSLOG_REMOTE" == "true" -a "$SYSLOG_SERVER" ]; then
-    SYSLOGD_OPTIONS="-R $SYSLOG_SERVER $SYSLOGD_OPTIONS"
-  fi
-
-  if [ -f /storage/.config/syslog.conf ]; then
-    SYSLOGD_OPTIONS="$SYSLOGD_OPTIONS -f /storage/.config/syslog.conf"
-  fi
-
-  syslogd $SYSLOGD_OPTIONS
-
-  sleep 3
-
-  progress "Starting Kernellog daemon"
-    klogd
-)&
+exit 0

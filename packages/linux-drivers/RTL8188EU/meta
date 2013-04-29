@@ -17,21 +17,24 @@
 #  the Free Software Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
-# Disklabel for System an Storage partition
-  DISKLABEL_SYSTEM="System"
-  DISKLABEL_STORAGE="Storage"
 
-# Defaultsize of system partition (Cylinder: 16=132MB, 31=255MB)
-  PARTSIZE_SYSTEM="31"
+PKG_NAME="RTL8188EU"
+PKG_VERSION="20130425"
+PKG_REV="1"
+PKG_ARCH="any"
+PKG_LICENSE="GPL"
+PKG_SITE="http://www.realtek.com.tw/downloads/downloadsView.aspx?Langid=1&PFid=48&Level=5&Conn=4&ProdID=274&DownTypeID=3&GetDown=false&Downloads=true"
+PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_DEPENDS=""
+PKG_BUILD_DEPENDS="toolchain linux"
+PKG_PRIORITY="optional"
+PKG_SECTION="driver"
+PKG_SHORTDESC="Realtek RTL81xxEU Linux 3.x driver"
+PKG_LONGDESC="Realtek RTL81xxEU Linux 3.x driver"
 
-# additional parameters to extlinux
-  EXTLINUX_PARAMETERS=""
+PKG_IS_ADDON="no"
+PKG_AUTORECONF="no"
 
-# enable BIOS update function
-  BIOS_UPDATE="no"
-
-# BIOS file to program
-  BIOS_FILE=""
-
-# location for BIOS backup (with filename)
-  BIOS_BACKUP=""
+# driver taken from
+# https://github.com/Red54/linux-shumeipai2/commit/026ba2734e035b2bde089a836912d6febabe87f3
+# and patched like the RTL8192CU driver for usage on kernel 3.7 and later
