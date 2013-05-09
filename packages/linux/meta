@@ -19,13 +19,23 @@
 ################################################################################
 
 PKG_NAME="linux"
-PKG_VERSION="3.8.10"
+
+if [ "$LINUX" = "3.2" ]; then
+  PKG_VERSION="3.2.44"
+elif [ "$LINUX" = "3.6" ]; then
+  PKG_VERSION="3.6.11"
+elif [ "$LINUX" = "3.8" ]; then
+  PKG_VERSION="3.8.11"
+else
+  PKG_VERSION="3.9.1"
+fi
+
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kernel.org"
 PKG_URL="http://www.kernel.org/pub/linux/kernel/v3.x/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS="busybox linux-drivers linux-firmware pciutils $BOOTLOADER"
+PKG_DEPENDS="busybox linux-drivers linux-firmware pciutils $BOOTLOADER dvb-fe-tool"
 PKG_BUILD_DEPENDS="toolchain cpio module-init-tools pciutils xz"
 PKG_PRIORITY="optional"
 PKG_SECTION="linux"
@@ -34,11 +44,6 @@ PKG_LONGDESC="This package contains a precompiled kernel image and the modules."
 PKG_IS_ADDON="no"
 
 PKG_AUTORECONF="no"
-
-if [ "$LINUX" = "3.6" ]; then
-  PKG_VERSION="3.6.11"
-  PKG_URL="http://www.kernel.org/pub/linux/kernel/v3.x/$PKG_NAME-$PKG_VERSION.tar.xz"
-fi
 
 if [ "$LINUX" = "ti-omap4" ]; then
   PKG_VERSION="2.6.38-ti-omap4"
