@@ -1,4 +1,5 @@
 #!/bin/sh
+
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2012 Stephan Raue (stephan@openelec.tv)
@@ -19,34 +20,37 @@
 #  http://www.gnu.org/copyleft/gpl.html
 ################################################################################
 
-PKG_NAME=vtuner-driver
-HG_URL=https://code.google.com/p/
-HG_NAME=vtuner.linux-driver
-HG_REV=latest
+UPDATEDIR=${DATADIR}/storage/.update
+UPDATEFILE=${UPDATEDIR}/SYSTEM
+SPLASHIMAGE="/squashfs/splash/splash.png"
 
-echo "getting sources..."
-  if [ ! -d $PKG_NAME.hg ]; then
-    hg clone ${HG_URL}${HG_NAME} $PKG_NAME.hg
-  fi
+#
+# load splash
+# berryboot is based on uClibc, so run ply-image via ld.so directly
+#
 
-  cd $PKG_NAME.hg
-    if [ $HG_REV = latest ]; then
-      hg update
-      HG_REV=$(hg identify -n)
-    else
-      hg update $HG_REV
-    fi
-    cd ..
+if [ -e /dev/fb0 -a -f "${SPLASHIMAGE}" ]; then
+# set framebuffer to a default resolution (1024x768-32)
+  LD_LIBRARY_PATH=/squashfs/lib /squashfs/lib/ld.so \
+    /squashfs/bin/busybox fbset -g 1024 768 1024 768 32
 
-echo "copying sources..."
-  rm -rf $PKG_NAME-$HG_REV
-  cp -R $PKG_NAME.hg $PKG_NAME-$HG_REV
+# load splash
+  LD_LIBRARY_PATH=/squashfs/lib /squashfs/lib/ld.so \
+    /squashfs/bin/ply-image ${SPLASHIMAGE} > /dev/null 2>&1
+fi
 
-echo "cleaning sources..."
-  rm -rf $PKG_NAME-$HG_REV/.hg
+#
+# Check if OpenELEC downloaded an update
+#
 
-echo "packing sources..."
-  tar cvJf $PKG_NAME-$HG_REV.tar.xz $PKG_NAME-$HG_REV
-
-echo "remove temporary sourcedir..."
-#  rm -rf $PKG_NAME-$HG_REV
+if [ -f "${UPDATEFILE}" ]; then
+  echo "Updating OpenELEC..."
+  cd /
+  umount -f /squashfs > /dev/null 2>&1
+  mv -f "${UPDATEFILE}" "/mnt/images/${IMAGE}"
+  rm -rf "${UPDATEDIR}/*"
+  sync
+  echo "Done, rebooting now..."
+  sleep 5
+  reboot -f
+fi

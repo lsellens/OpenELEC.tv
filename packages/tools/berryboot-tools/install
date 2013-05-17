@@ -22,7 +22,18 @@
 
 . config/options $1
 
-cd $PKG_BUILD
-  LDFLAGS="" make KDIR=$(kernel_path) CC=$CC
-  fix_module_depends vtunerc.ko "dvb_core"
+PLYMOUTH_DIR="$BUILD/plymouth-lite-*"
+PLYMOUTH_PKG_DIR=`find $PACKAGES -type d -name plymouth-lite 2>/dev/null`
 
+mkdir -p $INSTALL
+  cp $PKG_DIR/scripts/berryboot-init $INSTALL
+
+mkdir -p $INSTALL/bin
+  cp $PLYMOUTH_DIR/ply-image $INSTALL/bin
+
+mkdir -p $INSTALL/splash
+  if [ -f $PROJECT_DIR/$PROJECT/splash/splash.png ]; then
+    cp $PROJECT_DIR/$PROJECT/splash/splash.png $INSTALL/splash
+  else
+    cp $PLYMOUTH_PKG_DIR/splash/splash.png $INSTALL/splash
+  fi

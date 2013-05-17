@@ -83,6 +83,9 @@
 # LTO (Link Time Optimization) support
   LTO_SUPPORT="yes"
 
+# GOLD (Google Linker) support
+  GOLD_SUPPORT="no"
+
 # Bootloader to use (syslinux / u-boot / atv-bootloader)
   BOOTLOADER="syslinux"
 
@@ -91,6 +94,9 @@
 
 # Target Configfile for u-boot
   UBOOT_CONFIGFILE=""
+
+# install Berryboot support tools
+  BERRYBOOT_TOOLS="no"
 
 # Kernel to use. values can be:
 # default:  default mainline kernel
