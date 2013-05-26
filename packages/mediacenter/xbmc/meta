@@ -21,7 +21,9 @@
 PKG_NAME="xbmc"
 PKG_VERSION="12.2.0"
 if [ "$XBMC" = "master" ]; then
-  PKG_VERSION="795a693"
+  PKG_VERSION="9ac3e4c"
+elif [ "$XBMC" = "xbmc-aml" ]; then
+  PKG_VERSION="aml-frodo-d9119f2"
 fi
 PKG_REV="1"
 PKG_ARCH="any"
@@ -74,10 +76,6 @@ if [ "$OPENGLES_SUPPORT" = yes ]; then
   # for OpenGL-ES support
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS $OPENGLES"
   PKG_DEPENDS="$PKG_DEPENDS $OPENGLES"
-  if [ "$OPENGLES" = "marvell-libgfx" ]; then
-    PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS marvell-libvmeta marvell-ipp"
-    PKG_DEPENDS="$PKG_DEPENDS marvell-libvmeta marvell-ipp"
-  fi
 fi
 
 # for dbus support
@@ -172,9 +170,14 @@ if [ "$WEBSERVER" = yes ]; then
   PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS libmicrohttpd"
 fi
 
-if [ "$OPENMAX_SUPPORT" = yes ]; then
-  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS $OPENMAX"
-  PKG_DEPENDS="$PKG_DEPENDS $OPENMAX"
+if [ ! "$XBMCPLAYER_DRIVER" = default ]; then
+  PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS $XBMCPLAYER_DRIVER"
+  PKG_DEPENDS="$PKG_DEPENDS $XBMCPLAYER_DRIVER"
+
+  if [ "$XBMCPLAYER_DRIVER" = marvell-libvmeta ]; then
+    PKG_BUILD_DEPENDS="$PKG_BUILD_DEPENDS marvell-ipp"
+    PKG_DEPENDS="$PKG_DEPENDS marvell-ipp"
+  fi
 fi
 
 if [ "$VDPAU" = yes ]; then

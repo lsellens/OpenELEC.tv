@@ -89,10 +89,13 @@
   LTO_SUPPORT="yes"
 
 # GOLD (Google Linker) support
-  GOLD_SUPPORT="no"
+  GOLD_SUPPORT="yes"
 
 # Bootloader to use (syslinux / u-boot / atv-bootloader)
   BOOTLOADER="syslinux"
+
+# u-boot version to use (default / aml / cubox)
+  UBOOT_VERSION="default"
 
 # Configuration for u-boot
   UBOOT_CONFIG=""
@@ -259,8 +262,8 @@
 # e.g. GRAPHIC_DRIVERS="i915 i965 r300 r600 radeon nvidia nouveau"
   GRAPHIC_DRIVERS="nvidia"
 
-# OpenMAX implementation to use (no / bcm2835-driver)
-  OPENMAX="no"
+# XBMC Player implementation to use (default / bcm2835-driver / libamlplayer-m3)
+  XBMCPLAYER_DRIVER="default"
 
 # Use VDPAU video acceleration (needs nVidia driver and a supported card)
   VDPAU="yes"
@@ -337,6 +340,9 @@
 
 # cron support (yes / no)
   CRON_SUPPORT="yes"
+
+# Perf support in development builds (yes / no)
+  PERF_SUPPORT="yes"
 
 # Coreboot support (yes / no)
   COREBOOT="no"
