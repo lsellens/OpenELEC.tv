@@ -1,5 +1,56 @@
+3.2.9
+- update to SABnzbd-0.7.14
+
+3.2.8
+- Switched default host address from localhost to 127.0.0.1
+- update to SickBeard-55d9f11
+- update to Headphones-8bd1bfc
+
+3.2.7
+- update to CouchPotatoServer-fc8db13
+- update to SickBeard-7328164
+- update to Headphones-8926e25
+
+3.2.6
+- update to CouchPotatoServer-06a211a
+- update to SickBeard-dc109eb
+- update to Headphones-4348030
+
+3.2.5
+- update to CouchPotatoServer-fb90f65
+- update to SickBeard-bcc6ad3
+- update to Headphones-bb3b747
+
+3.2.4
+- update to CouchPotatoServer-40324ee
+- update to SickBeard-9cac2ff
+
+3.2.3
+- update to CouchPotatoServer-5c0d8a7
+- update to SickBeard-138b0ea
+- update to Headphones-452cf15
+
+3.2.2
+- update to CouchPotatoServer-0a749ce
+- update to SickBeard-fa50a06
+
+3.2.1
+- update to CouchPotatoServer-f1dde5c
+- update to SickBeard-effb693
+- update to Headphones-ebbe908
+
+3.2.0
+- Prevent idle shutdown on verify/repair/extract thanks to github user Tomislav
+- update to SickBeard-098b654
+
+3.1.9
+- update to CouchPotatoServer-5a23be2
+- update to SickBeard-476e8e1
+- Updated SABnzbd idle sleep prevention function for Frodo
+
 3.1.8
 - update to CouchPotatoServer-4db1b57
+- update to SickBeard-c8cbdbe
 
 3.1.7
 - update to CouchPotatoServer-f84aa8c

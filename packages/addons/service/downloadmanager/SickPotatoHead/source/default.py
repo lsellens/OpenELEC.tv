@@ -10,9 +10,7 @@ __settings__   = xbmcaddon.Addon(id='service.downloadmanager.SickPotatoHead')
 
 if __name__ == '__main__':
     __settings__.openSettings()
-
-#Restart Suite
-subprocess.check_call(['bash',__stop__])
-#os.system(__stop__)
-time.sleep(10)
-subprocess.call(['python',__start__])
+    #Restart Suite
+    subprocess.check_call(['bash',__stop__])
+    time.sleep(10)
+    subprocess.call(['python',__start__])

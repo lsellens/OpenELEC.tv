@@ -19,6 +19,7 @@
 ################################################################################
 
 import os
+import time
 import xbmc
 import xbmcaddon
 import subprocess

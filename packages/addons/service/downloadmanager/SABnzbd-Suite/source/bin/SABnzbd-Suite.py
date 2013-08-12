@@ -309,7 +309,7 @@ try:
         defaultConfig['misc']['complete_dir']  = pSabNzbdComplete
         servers = {}
         servers['localhost'] = {}
-        servers['localhost']['host']           = 'localhost'
+        servers['localhost']['host']           = '127.0.0.1'
         servers['localhost']['port']           = '119'
         servers['localhost']['enable']         = '0'
         categories = {}
@@ -335,7 +335,7 @@ try:
     autoProcessConfig = ConfigObj(os.path.join(pSabNzbdScripts, 'autoProcessTV.cfg'), create_empty=True)
     defaultConfig = ConfigObj()
     defaultConfig['SickBeard'] = {}
-    defaultConfig['SickBeard']['host']         = 'localhost'
+    defaultConfig['SickBeard']['host']         = '127.0.0.1'
     defaultConfig['SickBeard']['port']         = '8082'
     defaultConfig['SickBeard']['username']     = user
     defaultConfig['SickBeard']['password']     = pwd
@@ -390,13 +390,6 @@ try:
         defaultConfig['SABnzbd']['sab_password']   = pwd
         defaultConfig['SABnzbd']['sab_apikey']     = sabNzbdApiKey
         defaultConfig['SABnzbd']['sab_host']       = 'http://' + sabNzbdHost + '/'
-
-#    if 'true' in transauth:
-#        defaultConfig['torrent'] = {}
-#        defaultConfig['torrent']['torrent_username']      = transuser
-#        defaultConfig['torrent']['torrent_password']      = transpwd
-#        defaultConfig['torrent']['torrent_path']          = pSabNzbdCompleteMov
-#        defaultConfig['torrent']['torrent_host']          = 'localhost:9091'
 
     if sbfirstLaunch:
         defaultConfig['General']['metadata_xbmc']         = '1|1|1|1|1|1'
@@ -477,23 +470,23 @@ try:
         defaultConfig['transmission']['username']         = transuser
         defaultConfig['transmission']['password']         = transpwd
         defaultConfig['transmission']['directory']        = pSabNzbdCompleteMov
-        defaultConfig['transmission']['host']             = 'localhost:9091'
+        defaultConfig['transmission']['host']             = '127.0.0.1:9091'
 
     if cp2firstLaunch:
         defaultConfig['xbmc']['xbmc_update_library']      = '1'
         defaultConfig['xbmc']['xbmc_update_full']         = '1'
         defaultConfig['xbmc']['xbmc_notify_onsnatch']     = '1'
         defaultConfig['xbmc']['xbmc_notify_ondownload']   = '1'
-        defaultConfig['Sabnzbd']['category']     = 'movies'
-        defaultConfig['Sabnzbd']['pp_directory'] = pSabNzbdCompleteMov
+        defaultConfig['Sabnzbd']['category']              = 'movies'
+        defaultConfig['Sabnzbd']['pp_directory']          = pSabNzbdCompleteMov
         defaultConfig['Renamer'] = {}
-        defaultConfig['Renamer']['enabled']      = '1'
-        defaultConfig['Renamer']['from']         = pSabNzbdCompleteMov
-        defaultConfig['Renamer']['to']           = '/storage/videos'
-        defaultConfig['Renamer']['separator']    = '.'
-        defaultConfig['Renamer']['cleanup']      = '0'
-        defaultConfig['core']['permission_folder']   = '0644'
-        defaultConfig['core']['permission_file']     = '0644'
+        defaultConfig['Renamer']['enabled']               = '1'
+        defaultConfig['Renamer']['from']                  = pSabNzbdCompleteMov
+        defaultConfig['Renamer']['to']                    = '/storage/videos'
+        defaultConfig['Renamer']['separator']             = '.'
+        defaultConfig['Renamer']['cleanup']               = '0'
+        defaultConfig['core']['permission_folder']        = '0644'
+        defaultConfig['core']['permission_file']          = '0644'
 
     couchPotatoServerConfig.merge(defaultConfig)
     couchPotatoServerConfig.write()

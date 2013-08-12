@@ -20,7 +20,7 @@
 ################################################################################
 
 PKG_NAME="SickBeard"
-PKG_VERSION="024e86d"
+PKG_VERSION="55d9f11"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="OSS"
