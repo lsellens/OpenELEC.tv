@@ -245,7 +245,7 @@ try:
         defaultConfig['transmission']['username']         = transuser
         defaultConfig['transmission']['password']         = transpwd
         defaultConfig['transmission']['directory']        = pSickPotatoHeadCompleteMov
-        defaultConfig['transmission']['host']             = 'localhost:9091'
+        defaultConfig['transmission']['host']             = '127.0.0.1:9091'
 
     if cpfirstLaunch:
         defaultConfig['xbmc']['xbmc_update_library']      = '1'
